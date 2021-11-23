@@ -72,7 +72,7 @@ export default {
           }
         );
         const data = await response.json();
-        this.results = data.data.sort((a, b) => (a.score > b.score ? 1 : -1));
+        this.results = await data.data.sort((a, b) => (a.score < b.score ? 1 : -1));
         console.log(this.results);
       } catch (error) {
         console.log(error);
