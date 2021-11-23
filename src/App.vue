@@ -39,6 +39,7 @@ export default {
   },
   methods: {
     async search() {
+      this.loading = true;
       const d = {
         documents: [
           "The JavaScript Analyzer analyzes your JavaScript, TypeScript, Angular, Meteor, Ember, and Vue files and raises issues if they dont follow the best practices and methods for building efficient JavaScript Applications.",
