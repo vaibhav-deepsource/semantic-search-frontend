@@ -1,17 +1,18 @@
 <template>
   <div v-if="currentDoc" class="card">
     <header class="card-header">
-      <a class="card-header-title" :href="currentDoc.metadata">{{currentDoc.metadata}}</a>
+      <a class="card-header-title" :href="currentDoc.metadata">{{
+        currentDoc.metadata
+      }}</a>
     </header>
     <div class="card-content">
-      <div class="content" v-html="renderMd">
-      </div>
+      <div class="content" v-html="renderMd"></div>
     </div>
   </div>
 </template>
 
 <script>
-import {marked} from 'marked';
+import { marked } from "marked";
 export default {
   name: "Card",
   props: {
@@ -64,16 +65,42 @@ export default {
           metadata:
             "https://deepsource.io/docs/analyzer/javascript#dependency-calculation",
         },
+        {
+          text: "## Configuration - `.deepsource.toml`\n\nThis section covers configuration specific to the `python` analyzer. Please make sure to read the general [configuration guide](/setup-analysis#what-is-deepsourcetoml) first.",
+          metadata:
+            "https://deepsource.io/docs/analyzer/python#configuration---deepsourcetoml",
+        },
+        {
+          text: '### `name`\n\n- **Type**: [String](https://github.com/toml-lang/toml#string)\n- **Presence**: mandatory\n- **Description**: Shortcode of the analyzer.\n- **Example**:\n```toml\nname = "python"\n```',
+          metadata: "https://deepsource.io/docs/analyzer/python#name",
+        },
+        {
+          text: "### `enabled`\n\n- **Type**: [Boolean](https://github.com/toml-lang/toml#boolean)\n- **Presence**: mandatory\n- **Description**: Toggle whether this analyzer should be run.\n- **Example**:\n```toml\nenabled = true\n```",
+          metadata: "https://deepsource.io/docs/analyzer/python#enabled",
+        },
+        {
+          text: '### `dependency_file_paths`\n\n- **Type**: [Array](https://github.com/toml-lang/toml#array)\n- **Presence**: optional\n- **Description**: List of files that contain the list of external dependencies relative to the repository\'s root.\n- **Example**:\n```toml\ndependency_file_paths = [\n  "dev_requirements.txt",\n  "prod_requirements.txt"\n]\n```\n\n<alert>\n\nBy default, the following are automatically detected and scanned for\ndependencies, if found in the repository\'s root:\n- `Pipfile`\n- `Pipfile.lock`\n- `poetry.lock`\n- `pyproject.toml` (if containing a `[tool.poetry]` or `[tool.flit]` section)\n- `requirements.txt`\n- `setup.py`\n\nIf your package manager produces a lock file, specify both the requirements file and the lock file here.\n\n</alert>',
+          metadata:
+            "https://deepsource.io/docs/analyzer/python#dependency_file_paths",
+        },
+        {
+          text: '### `meta`\n\n- **Type**: [Table](https://github.com/toml-lang/toml#table)\n- **Presence**: optional\n- **Description**: Any supported metadata to pass to the analyzer.\n- **Example**:\n```toml\n[analyzers.meta]\n  runtime_version = "3.x.x"\n  max_line_length = 88\n  skip_doc_coverage = ["module", "magic", "init"]\n```\n\n#### `runtime_version`\n\n- **Type**: [String](https://github.com/toml-lang/toml#string)\n- **Presence**: optional\n- **Description**: Runtime version of your language in [semver](https://semver.org/).\n- **Available Values**: "2.x.x", "3.x.x"\n- **Default Value**: "3.x.x"\n- **Example**:\n```toml\nruntime_version = "3.x.x"\n```\n\n#### `max_line_length`\n\n- **Type**: [Integer](https://github.com/toml-lang/toml#integer)\n- **Presence**: optional\n- **Description**: Maximum allowed line length (including documentation).\n- **Available Value**: Any integer value greater than or equal to `79`\n- **Default Value**:`88`\n- **Example**:\n```toml\nmax_line_length = 88\n```\n\n#### `skip_doc_coverage`\n\n- **Type**: [Array](https://github.com/toml-lang/toml#array)\n- **Presence**: optional\n- **Description**: Specify which artifacts to skip when calculating documentation coverage.\n- **Available Values**: `module`, `magic`, `init` and `class`\n\n  - `module` - Ignore module docstrings\n  - `magic` - Ignore docstrings of magic methods (except "__init__")\n  - `init` - Ignore docstrings of "__init__" methods\n  - `class` - Ignore docstrings of class definitions\n  - `nonpublic` - Ignore docstrings for non-public classes and methods\n- **Default Value**: ["module", "magic", "init"]\n- **Example**:\n```toml\nskip_doc_coverage = ["module", "magic", "init"]\n```\n\n#### `type_checker`\n\n- **Type**: [String](https://github.com/toml-lang/toml#string)\n- **Presence**: optional\n- **Description**: Activates the type checking analyzer. Please note: This will only raise type annotation issues.\n- **Available Value**: "mypy"\n- **Default Value**: None\n- **Example**:\n```toml\ntype_checker = "mypy"\n```\n\n#### `additional_builtins`\n\n- **Type**: [Array](https://github.com/toml-lang/toml#array)\n- **Presence**: optional\n- **Description**: Additional built-ins added by the user or third-party modules.\n- **Available Value**: An array with additional built-in names.\n- **Default Value**: None\n- **Example**:\n```toml\nadditional_builtins = ["_", "pretty_output"]\n```',
+          metadata: "https://deepsource.io/docs/analyzer/python#meta",
+        },
+        {
+          text: '## Sample config\n\n```toml\nversion = 1\n\ntest_patterns = [\n  "tests/**",\n  "test_*.py"\n]\n\nexclude_patterns = [\n  "migrations/**",\n  "**/examples/**"\n]\n\n[[analyzers]]\nname = "python"\nenabled = true\ndependency_file_paths = ["requirements/development.txt"]\n\n  [analyzers.meta]\n  runtime_version = "3.x.x"\n  type_checker = "mypy"\n  max_line_length = 88\n  skip_doc_coverage = ["module", "magic", "init"]\n  additional_builtins = ["_", "pretty_output"]\n```',
+          metadata: "https://deepsource.io/docs/analyzer/python#sample-config",
+        },
       ],
     };
   },
   computed: {
-    currentDoc: function() {
-      return this.documents[this.documentId]
+    currentDoc: function () {
+      return this.documents[this.documentId];
     },
-    renderMd: function() {
-      return marked(this.currentDoc.text)
-    }
-  }
+    renderMd: function () {
+      return marked(this.currentDoc.text);
+    },
+  },
 };
 </script>
