@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "buefy": "^0.9.10",
+    "marked": "^4.0.4",
     "vue": "2.6.12",
     "vue-router": "3.5.1"
   },
