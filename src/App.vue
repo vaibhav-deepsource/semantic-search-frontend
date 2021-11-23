@@ -1,8 +1,14 @@
 <template>
   <div class="flex flex-col items-center justify-around p-4">
-    <div class="w-max-128">
-      <b-field label="Search docs">
-        <b-input placeholder="Search..." type="search" v-model="searchQuery" />
+    <h1 class="text-2xl font-bold border-b mb-4">Sourcery</h1>
+    <div class="">
+      <b-field>
+        <b-input
+          expanded="true"
+          placeholder="Search..."
+          type="search"
+          v-model="searchQuery"
+        />
         <b-button
           class="ml-2"
           type="is-link is-light"
@@ -12,7 +18,7 @@
         >
       </b-field>
 
-      <div v-if="results" class="flex flex-col space-y-6">
+      <div v-if="results" class="flex flex-col space-y-6 w-max-128">
         <card
           v-for="item in results"
           :key="item.document"
