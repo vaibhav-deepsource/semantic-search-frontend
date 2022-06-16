@@ -6,3 +6,7 @@ enabled = true
 
   [analyzers.meta]
   plugins = ["vue"]
+
+[[analyzers]]
+name = "shell"
+enabled = true
